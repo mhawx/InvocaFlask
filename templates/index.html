@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {% extends "base.html" %}
 
 {% block content %}
@@ -199,4 +200,207 @@
 </script>
 {% endblock %}
 
+=======
+{% extends "base.html" %}
+
+{% block content %}
+{% block title %} {% endblock %}
+<h2>Manage Campaigns
+    <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#mymodal">Add
+        Campaign
+    </button>
+    <a href="/makejson" class="btn btn-info float-end" role="button">Get Invoca Array</a>
+</h2>
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+{% for message in messages %}
+
+<div class="alert alert-success alert-dismissable fade show" role="alert">
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+    {{message}}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<table id="data" class="table table-striped">
+    <thead>
+    <tr>
+        <th>URL</th>
+        <th>UTM Campaign</th>
+        <th>UTM Medium</th>
+        <th>UTM Source</th>
+        <th>Destination</th>
+        <th>Forward</th>
+        <th>Agency</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for inv in invdata %}
+    <tr>
+        <td>{{ inv.url }}</td>
+        <td>{{ inv.utm_campaign }}</td>
+        <td>{{ inv.utm_medium }}</td>
+        <td>{{ inv.utm_source }}</td>
+        <td>{{ inv.destination }}</td>
+        <td>{{ inv.forward }}</td>
+        <td>{{ inv.agency }}</td>
+        <td><p class="text-nowrap" </p>
+            <a href="/update/{{inv.id}}" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+               data-bs-target="#modaledit{{inv.id}}">EDIT</a>
+            <a href="/delete/{{inv.id}}" class="btn btn-danger btn-sm"
+               onclick="return confirm('Are you sure you want to delete')">DELETE</a>
+        </td>
+    </tr>
+
+    <!-- Modal Edit Campaign-->
+    <div class="modal fade" id="modaledit{{inv.id}}" tabindex="-1" aria-labelledby="Edit Campaign" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Campaign</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="{{url_for('update')}}" method="POST">
+
+                        <div class="form-group">
+                            <input type="hidden" name="id" value="{{inv.id}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>URL:</label>
+                            <input type="text" class="form-control" name="url" required="1" value="{{inv.url}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>UTM_Campaign:</label>
+                            <input type="text" class="form-control" name="utm_campaign" required="1"
+                                   value="{{inv.utm_campaign}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>UTM_Source:</label>
+                            <input type="text" class="form-control" name="utm_source" required="1"
+                                   value="{{inv.utm_source}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>UTM_Medium:</label>
+                            <input type="text" class="form-control" name="utm_medium" required="1"
+                                   value="{{inv.utm_medium}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Swap_Number:</label>
+                            <input type="text" class="form-control" name="destination" required="1"
+                                   value="{{inv.destination}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Forward_Number:</label>
+                            <input type="text" class="form-control" name="forward" required="1" value="{{inv.forward}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Agency:</label>
+                            <input type="text" class="form-control" name="agency" required="1" value="{{inv.agency}}">
+                        </div>
+
+
+                        <div class="modal-footer">
+
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">Update</button>
+                            </div>
+
+                    </form>
+
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- Modal Add Campaigns-->
+
+
+<div class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Campaign</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <form action="{{url_for('insert')}}" method="POST">
+
+                    <div class="form-group">
+                        <label>URL:</label>
+                        <input type="text" class="form-control" name="url" required="1">
+                    </div>
+                    <div class="form-group">
+                        <label>UTM_Campaign:</label>
+                        <input type="text" class="form-control" name="utm_campaign" required="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>UTM_Source:</label>
+                        <input type="text" class="form-control" name="utm_source" required="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label>UTM_Medium:</label>
+                        <input type="text" class="form-control" name="utm_medium" required="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Swap_Number:</label>
+                        <input type="text" class="form-control" name="destination" required="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Forward_Number:</label>
+                        <input type="text" class="form-control" name="forward" required="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Agency:</label>
+                        <input type="text" class="form-control" name="agency" required="1">
+                    </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <div class="form-group">
+                    <button class="btn btn-primary" type="submit">Add Campaign</button>
+                </div>
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+      $('#data').DataTable();
+    });
+
+</script>
+{% endblock %}
+
+>>>>>>> 6f0881e044d39a22ad01d03b0c93409edad40334
 {% endblock %}
